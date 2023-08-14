@@ -63,20 +63,16 @@ public class MarchentStockController {
         return ResponseEntity.status(400).body(new ApiResponse("merchant stock can not be deleted"));
     }
 
-    private final MerchantService merchantService;
-    private final ProductService productService;
+ 
 
 
     @PutMapping("/updatestock/{pId}/{mId}/{quantity}")
     public ResponseEntity addtostock(@PathVariable Integer quantity ,@PathVariable Integer mId, @PathVariable Integer pId){
-        boolean trueproduct=productService.checkPid(pId);
-        boolean truemerchant=merchantService.checkMid(mId);
-         if(truemerchant && trueproduct ){
-            marchentStockService.updateStock(quantity);
+         boolean itcorrect=marchentStockService.updateStock(quantity, mId, pId);
+        if(itcorrect){
             return ResponseEntity.status(200).body(new ApiResponse("you added to stock "));
-
     }
-        return ResponseEntity.status(400).body(new ApiResponse("can not add to stock"));
+            return ResponseEntity.status(400).body(new ApiResponse("can not add to stock"));
     }
 
 }
