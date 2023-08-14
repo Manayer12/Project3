@@ -2,12 +2,18 @@ package com.example.project3.Service;
 
 import com.example.project3.Model.Merchant;
 import com.example.project3.Model.MerchantStock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @Service
 public class MarchentStockService {
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private MerchantService merchantService;
 
     ArrayList<MerchantStock> merchantStocks = new ArrayList<>();
 
@@ -41,13 +47,18 @@ public class MarchentStockService {
         return false;
 
     }
-    public void updateStock(Integer quantity) {
-        for (int i = 0; i < merchantStocks.size(); i++) {
+    public boolean updateStock(Integer quantity,Integer pId,Integer mId) {
+        boolean trueproduct=productService.checkPid(pId);
+        boolean truemerchant=merchantService.checkMid(mId);
+       if( trueproduct && truemerchant){
+        for (int i = 0; i < merchantStocks.size();i++){
+            if(Objects.equals(merchantStocks.get(i).getProductId(), pId) && Objects.equals(merchantStocks.get(i).getMerchantId(), mId)){
                 merchantStocks.get(i).setStock(merchantStocks.get(i).getStock()+quantity);
-            }
+
+                  return true;}}}
 
 
-        }
+        return false;}
 
     public boolean checkstock(Integer product_id){
         for (int i = 0; i < merchantStocks.size(); i++) {
